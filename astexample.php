@@ -27,8 +27,8 @@ $subcadena=substr($archivo ,$indiceAbre+2,$indiceCierra-($indiceAbre+2));
 //echo 'Primero:'.$subcadena;
 
 $primero = explode('[>'.$subcadena.'<]', $archivo);
-echo $primero[0];
-echo $primero[1];
+echo $primero[0].$primero[1];
+
 /*$porciones1 = explode('[>', $archivo);
 echo $porciones1[0];
 $porciones2 = explode('<]', $porciones1[1]);
