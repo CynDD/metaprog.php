@@ -27,7 +27,7 @@ $subcadena=substr($archivo ,$indiceAbre+2,$indiceCierra-($indiceAbre+2));
 //echo 'Primero:'.$subcadena;
 
 $primero = explode('[>'.$subcadena.'<]', $archivo);
-echo $primero[0].$primero[1];
+//echo $primero[0].$primero[1];
 
 /*$porciones1 = explode('[>', $archivo);
 echo $porciones1[0];
@@ -62,10 +62,7 @@ $porciones2 = explode('<]', $porciones1[1]);
 //preg_match('~(\[>([^<]*))*<\]~i', $archivo, $match);
 //print_r($match); 
 
-$code = <<<'CODE'
-<?php
-echo $match[1];
-CODE;
+$code ="<?php ".$subcadena.";";
 
 
 
@@ -79,5 +76,5 @@ try {
 }
 
 $dumper = new NodeDumper;
-//echo $dumper->dump($ast) . "\n"; 
+echo $dumper->dump($ast) . "\n"; 
 ?>
