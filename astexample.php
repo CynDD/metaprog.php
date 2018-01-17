@@ -17,20 +17,47 @@ CODE;*/
 
 $archivo = file_get_contents('archivo.php'); //Transmite un fichero entero a una cadena
 
-/*
-$re = '/(?=(\((?:[^()]++|(?1))*\)))/'; 
-$str = 'a(bcdefghijkl(mno))p)q((('; 
-preg_match_all($re, $str, $m); 
-print_r($m[1]); // => Array ( [0] => (bcdefghijkl(mno)p) [1] => (mno) ) */
+//strrpos — Encuentra la posición de la última aparición de un substring en un string
+//explode — Divide un string en varios string, devuelve un array de string
+$indiceAbre=strrpos( $archivo ,'[>');
+$indiceCierra=stripos( $archivo ,'<]');
 
-if(preg_match_all("#((\[>)(.^((\[>)|(<\])))*(<\]))*#",$archivo,$matches)) {
+
+$subcadena=substr($archivo ,$indiceAbre+2,$indiceCierra-($indiceAbre+2));
+//echo 'Primero:'.$subcadena;
+
+$primero = explode('[>'.$subcadena.'<]', $archivo);
+echo $primero[0];
+echo $primero[1];
+/*$porciones1 = explode('[>', $archivo);
+echo $porciones1[0];
+$porciones2 = explode('<]', $porciones1[1]);
+//echo 'Segundo:'.$porciones1[0].$porciones2[1];*/
+
+//echo $porciones[0];
+//echo $porciones[1];
+//echo $indiceAbre;
+//echo $indiceCierra;
+
+/*for($i=0;$i<strlen($archivo);$i++){ 
+    echo $archivo[$i]; 
+	echo($archivo[$i]==[);
+	if($archivo[$i]=='[' and $archivo[$i+1]=='<'){
+		array_push($position, $i);
+		echo $i;
+		
+	}
+}*/
+
+
+/*if(preg_match_all("#(?=(\[>(?:[^(<\])]+)*<\]))#",$archivo,$matches)) {
 //if (preg_match_all("/(?=(\((?:[^()]++|(?1))*\)))/",$archivo,$matches)) {
     $num_matches = count($matches[1]);
     echo "Matches: " . $num_matches . "\n";
     for ($i = 0; $i < $num_matches; $i++) {
         echo "Párrafo " . ($i+1) . ": " . $matches[1][$i] . "\n";
     }
-}
+}*/
 
 //preg_match('~(\[>([^<]*))*<\]~i', $archivo, $match);
 //print_r($match); 
@@ -52,5 +79,5 @@ try {
 }
 
 $dumper = new NodeDumper;
-echo $dumper->dump($ast) . "\n"; 
+//echo $dumper->dump($ast) . "\n"; 
 ?>

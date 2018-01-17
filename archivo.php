@@ -1,1 +1,1 @@
-[> echo "Hello!"; <][> echo "Cynthia!"; [> echo "Chau"; <]<]echo $bye;
+[> echo $bueno;[> echo "Hello!"; <]echo $bye;<]
