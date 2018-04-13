@@ -8,7 +8,7 @@ use PhpParser\NodeTraverser;
 use PhpParser\PrettyPrinter;
 
 use PhpParser\Node\Expr;
-//use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\BinaryOp\Mul;
 //use PhpParser\Node\Expr\BinaryOp\Plus;
@@ -23,29 +23,10 @@ use PhpParser\Node\Stmt\UseUse;
 
 
 $archivo = file_get_contents('archivo.php'); //Transmite un fichero entero a una cadena
-//$archivo = '[> [< $x=1; >] <]'; /////
 
-//$archivo = '[> [< $x=1+2; >] <]';
-$archivo = '[> [< $x=\'Hola\'; >] <]';
-/* Ejemplo de uso:
+$archivo = '[» [« $x=\'Hola\'; »] «]';
 
-'[> [< $x = 1; >] <]'
-	parse & ast2php
-'[> return new PhpParser\Node\Expr\Assign(new PhpParser\Node\Expr\Variable("x"), new PhpParser\Node\Scalar\LNumber(1)); <]'
-	eval & unparse
-'$x = 1;'
-
-*/
-
-
-//preg_match("/\[(?:<((?:[^\[]|\[[^<>])*)>|>((?:[^\[]|\[[^<>])*)<)\]/", $archivo,$matches);
-
-//print_r($matches[1]);
-//$code=$matches[1];
-//echo $code;
-
-
-$exp_reg='/\[<(?:[^\[\]]+|\[(?![<>])|(?<![<>])\])*>\]|\[>(?:[^\[\]]+|\[(?![<>])|(?<![<>])\])*<\]/';
+$exp_reg='/\[»((?:[^\[\]]|\[(?![«»])|(?<![«»])\])*)«\]|\[«((?:[^\[\]]|\[(?![«»])|(?<![«»])\])*)»\]/';
 	
 function startsWith($haystack, $needle)
 {
@@ -62,19 +43,19 @@ try {
 			$e= preg_replace_callback($exp_reg, function ($matches){
 						if(startsWith($matches[0],'"')){
 							return $matches[0];
-						} else if (startsWith($matches[0],'[<')) {
+						} else if (startsWith($matches[0],'[«')) {
 							$code = substr($matches[0], 2, -2);
 							echo "Parsing ... ". $code;
 							global $parser, $c, $ast;
 							$ast = $parser->parse('<?php '. $code .'?>');
+							echo $ast;
 							$c++;
 							return ast2php($ast);
 							
-						} else if (startsWith($matches[0],'[>')) {
+						} else if (startsWith($matches[0],'[»')) {
 							$code = substr($matches[0], 2, -2);
 							echo "Evaluating ... ". $code;
 							$prettyPrinter = new PrettyPrinter\Standard;
-							//$evaledAST = eval($matches[1]);
 							$evaledAST = eval($code); 
 							
 							if ($evaledAST instanceof Expr) { 
@@ -92,12 +73,7 @@ try {
     return;
 }
 
-$dumper = new NodeDumper;
-//echo $dumper->dump($ast) . "\n";
 
-//$result= ast2php($ast);
-//echo ast2php($ast);
-echo "<br/><br?>"; ////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -179,13 +155,13 @@ function ast2php($ast) : string {
     }
 
 
-$prettyPrinter = new PrettyPrinter\Standard;
-$evaledAST = eval($e); // example Expr
-//$evaledAST = eval('return new PhpParser\Node\Expr\Assign(new PhpParser\Node\Expr\Variable("x"), new PhpParser\Node\Scalar\LNumber(1));'); // example Stmt
+/*$prettyPrinter = new PrettyPrinter\Standard;
+$evaledAST = eval($e); 
+
 if ($evaledAST instanceof Expr) { 
 	echo $prettyPrinter->prettyPrintExpr($evaledAST);
 } else {
 	//echo $prettyPrinter->prettyPrint($evaledAST);
-}
+}*/
 
 ?>
